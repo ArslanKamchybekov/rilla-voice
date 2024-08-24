@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import TranscriptViewer from './components/TranscriptViewer';
-import CommentSidebar from './components/CommentSidebar';
-import CommentBox from './components/CommentBox';
+import TranscriptViewer from './TranscriptViewer';
+import SummarySection from './SummarySection';
+import CommentSidebar from './CommentSidebar';
+import CommentBox from './CommentBox';
 
-type CommentsType = { [key: number]: string[] };
-
-const App: React.FC = () => {
+const AppLayout: React.FC = () => {
   const [selectedEntryId, setSelectedEntryId] = useState<number | null>(null);
-  const [comments, setComments] = useState<CommentsType>({});
+  const [comments, setComments] = useState<{ [key: number]: string[] }>({});
   const [editingCommentIndex, setEditingCommentIndex] = useState<number | null>(null);
 
   const handleSelectEntry = (id: number) => {
     setSelectedEntryId(id);
-    setEditingCommentIndex(null); 
+    setEditingCommentIndex(null);
   };
 
   const handleAddComment = (newComment: string) => {
@@ -24,10 +23,6 @@ const App: React.FC = () => {
     }
   };
 
-  const handleEditComment = (index: number) => {
-    setEditingCommentIndex(index);
-  };
-
   const handleSaveComment = (text: string) => {
     if (selectedEntryId !== null && editingCommentIndex !== null) {
       setComments(prev => ({
@@ -36,8 +31,8 @@ const App: React.FC = () => {
           index === editingCommentIndex ? text : comment
         ),
       }));
-      setEditingCommentIndex(null); 
     }
+    setEditingCommentIndex(null);
   };
 
   const handleDeleteComment = () => {
@@ -46,8 +41,8 @@ const App: React.FC = () => {
         ...prev,
         [selectedEntryId]: prev[selectedEntryId].filter((_, index) => index !== editingCommentIndex),
       }));
-      setEditingCommentIndex(null); 
     }
+    setEditingCommentIndex(null);
   };
 
   const handleCancel = () => {
@@ -62,16 +57,17 @@ const App: React.FC = () => {
           onSelectEntry={handleSelectEntry}
           onAddComment={handleAddComment}
           comments={comments}
-          onEditComment={handleEditComment}
+          onEditComment={(index) => setEditingCommentIndex(index)}
           onSaveComment={handleSaveComment}
           onCancel={handleCancel}
         />
+        <SummarySection />
       </div>
       <div className="flex flex-col w-1/4">
         <CommentSidebar
           selectedEntryId={selectedEntryId}
           comments={comments}
-          onEditComment={handleEditComment}
+          onEditComment={(index) => setEditingCommentIndex(index)}
           onDeleteComment={handleDeleteComment}
           onSaveComment={handleSaveComment}
           onCancel={handleCancel}
@@ -88,4 +84,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default AppLayout;
