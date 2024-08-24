@@ -1,0 +1,51 @@
+service: sales-transcript-backend
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    DYNAMODB_TABLE_NAME: SalesTranscriptComments
+    S3_BUCKET_NAME: sales-transcript-files
+
+functions:
+  addComment:
+    handler: functions/addComment/handler.addComment
+    events:
+      - http:
+          path: comments
+          method: post
+  getComments:
+    handler: functions/getComments/handler.getComments
+    events:
+      - http:
+          path: comments/{transcriptId}
+          method: get
+  generateSummary:
+    handler: functions/generateSummary/handler.generateSummary
+    events:
+      - http:
+          path: summarize
+          method: post
+
+resources:
+  Resources:
+    CommentsDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: transcriptId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: transcriptId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+    SalesTranscriptFilesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.S3_BUCKET_NAME}
