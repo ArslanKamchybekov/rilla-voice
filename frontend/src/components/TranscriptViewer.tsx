@@ -65,8 +65,8 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold bg-yellow-500 text-center">Conversation Transcript</h2>
+    <div className="p-0">
+      <h2 className="text-xl font-bold bg-yellow-300 text-center h-[50px] flex justify-center items-center">Conversation Transcript</h2>
       <div className="mt-4 bg-white p-4 rounded shadow-lg h-96 overflow-y-scroll">
         {transcriptData.map((entry) => (
           <div

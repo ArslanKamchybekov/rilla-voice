@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import TranscriptViewer from './TranscriptViewer';
 import CommentSidebar from './CommentSidebar';
-import CommentBox from './CommentBox';
+import TranscriptViewer from './TranscriptViewer';
 import SummarySection from './SummarySection';
+import CommentBox from './CommentBox';
 
 const AppLayout: React.FC = () => {
   const [selectedEntryId, setSelectedEntryId] = useState<number | null>(null);
@@ -35,6 +35,10 @@ const AppLayout: React.FC = () => {
     }
   };
 
+  const handleEditComment = (index: number) => {
+    setEditingCommentIndex(index);
+  };
+  
   const handleDeleteComment = () => {
     if (selectedEntryId !== null && editingCommentIndex !== null) {
       setComments((prev) => ({
@@ -56,36 +60,32 @@ const AppLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex p-8 bg-gray-200 min-h-screen">
-      <div className="flex flex-col w-full">
+    <div className="flex flex-col lg:flex-row lg:space-x-8 p-4 lg:p-8 bg-gray-200 min-h-screen">
+      <div className="flex flex-col w-full lg:w-3/4 space-y-4">
         <TranscriptViewer
           selectedEntryId={selectedEntryId}
           onSelectEntry={handleSelectEntry}
           onAddComment={handleAddComment}
           comments={comments}
-          onEditComment={(index) => setEditingCommentIndex(index)}
+          onEditComment={handleEditComment}
           onSaveComment={handleSaveComment}
           onCancel={handleCancel}
-          onUploadImage={handleUploadImage} // Pass the handler
+          onUploadImage={handleUploadImage}
         />
-        <SummarySection />
+        <SummarySection
+          comments={comments}
+          selectedEntryId={selectedEntryId}
+        />
       </div>
-      <div className="flex flex-col w-1/4">
+      <div className="flex flex-col w-full lg:w-1/4 space-y-4">
         <CommentSidebar
           selectedEntryId={selectedEntryId}
           comments={comments}
-          onEditComment={(index) => setEditingCommentIndex(index)}
+          onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
           onSaveComment={handleSaveComment}
           onCancel={handleCancel}
         />
-        {selectedEntryId !== null && editingCommentIndex !== null && (
-          <CommentBox
-            initialText={comments[selectedEntryId][editingCommentIndex]?.text || ''}
-            onSave={(text, imageUrl) => handleSaveComment(selectedEntryId, text, imageUrl)}
-            onCancel={handleCancel}
-          />
-        )}
       </div>
     </div>
   );

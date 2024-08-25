@@ -1,11 +1,27 @@
+// SummarySection.tsx
 import React from 'react';
 
-const SummarySection: React.FC = () => {
+interface SummarySectionProps {
+  comments: { [key: number]: { text: string; imageUrl?: string }[] };
+  selectedEntryId: number | null;
+}
+
+const SummarySection: React.FC<SummarySectionProps> = ({ comments, selectedEntryId }) => {
+  const getSummary = () => {
+    if (selectedEntryId === null || !comments[selectedEntryId]) {
+      return 'No comments for this entry.';
+    }
+    
+    const commentCount = comments[selectedEntryId].length;
+    const commentTexts = comments[selectedEntryId].map(comment => comment.text).join(', ');
+
+    return `There are ${commentCount} comments for this entry: ${commentTexts}`;
+  };
+
   return (
-    <div className="p-4 bg-yellow-500 text-black rounded-lg">
+    <div className="flex-1 p-4 w-full bg-yellow-300 text-black rounded-lg">
       <div className="text-xl font-bold mb-2">Summary</div>
-      <p>Summery here...</p>
-      {/* Actaual summery would be here*/}
+      <p>{getSummary()}</p>
     </div>
   );
 };

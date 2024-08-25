@@ -3,7 +3,7 @@ import rilla from "./assets/rilla.jpeg";
 
 const NavBar: React.FC = () => {
   return (
-    <nav className="bg-white-800">
+    <nav className="bg-yellow-400">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -47,24 +47,29 @@ const NavBar: React.FC = () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <img className="h-8 w-auto" src={rilla} alt="Your Company" />
+              <div
+                className="bg-black w-32 h-12 flex items-center justify-center"
+                style={{
+                  backgroundImage: `url(${rilla})`,
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "100% 100%",
+                }}
+              />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4"></div>
             </div>
           </div>
 
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div>
-              <span className="text-xl font-bold text-center text-black  ">
-                Sign in
-              </span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-center text-black ml-6">
-                Sign out
-              </span>
-            </div>
+          <div
+           className="flex justify-end pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <button className="bg-black hover:bg-yellow-200 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg hover:text-black">
+              Sign in
+            </button>
+            <button className="bg-black hover:bg-yellow-200 text-white font-bold py-2 px-4 rounded shadow-md hover:shadow-lg hover:text-black ml-6">
+              Sign out
+            </button>
           </div>
         </div>
       </div>
