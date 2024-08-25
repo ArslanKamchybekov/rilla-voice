@@ -1,9 +1,10 @@
 import React from "react";
+import { Button } from "@mui/material";
 import rilla from "./assets/rilla.jpeg";
 
 const NavBar: React.FC = () => {
   return (
-    <nav className="bg-white-800">
+    <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -19,13 +20,13 @@ const NavBar: React.FC = () => {
                 className="block h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                 />
               </svg>
@@ -33,13 +34,13 @@ const NavBar: React.FC = () => {
                 className="hidden h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
@@ -55,16 +56,20 @@ const NavBar: React.FC = () => {
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div>
-              <span className="text-xl font-bold text-center text-black  ">
-                Sign in
-              </span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-center text-black ml-6">
-                Sign out
-              </span>
-            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: "0.875rem", marginRight: 2 }}
+            >
+              Sign in
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ fontSize: "0.875rem", marginLeft: 4 }}
+            >
+              Sign out
+            </Button>
           </div>
         </div>
       </div>

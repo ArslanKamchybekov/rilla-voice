@@ -1,4 +1,4 @@
-import sapesperson from "./assets/salesperson.jpg";
+import salesperson from "./assets/salesperson.jpg";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -8,12 +8,12 @@ const Home = () => {
         <div className="absolute inset-0 -z-10" aria-hidden="true">
           <img
             className="w-full h-auto object-cover"
-            src={sapesperson}
+            src={salesperson}
             alt="salesperson"
-            style={{ height: "80vh" }}
+            style={{ height: "95vh" }}
           />
         </div>
-        <div className="relative z-10 max-w-lg py-32 sm:py-48 lg:py-56">
+        <div className="relative z-10 max-w-lg py-32 sm:py-48 lg:py-80">
           <div className="bg-black bg-opacity-60 p-10 rounded-md w-[60rem]">
             <h1 className="text-left text-4xl font-bold tracking-tight text-white sm:text-6xl">
               Transform Sales Conversation
