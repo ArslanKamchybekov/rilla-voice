@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 
 interface TranscriptViewerProps {
-    selectedEntryId: number | null;
-    onSelectEntry: (id: number) => void;
-    onAddComment: (newComment: string) => void;
-    comments: { [key: number]: string[] };
-    onEditComment: (index: number) => void;
-    onSaveComment: (text: string) => void;
-    onCancel: () => void;
-  
+  selectedEntryId: number | null;
+  onSelectEntry: (id: number) => void;
+  onAddComment: (newComment: string) => void;
+  comments: { [key: number]: string[] };
+  onEditComment: (index: number) => void;
+  onSaveComment: (text: string) => void;
+  onCancel: () => void;
 }
 
 const transcriptData = [
@@ -24,13 +23,13 @@ const transcriptData = [
 ];
 
 const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
-    selectedEntryId,
-    onSelectEntry,
-    onAddComment,
-    comments,
-    onEditComment,
-    onSaveComment,
-    onCancel
+  selectedEntryId,
+  onSelectEntry,
+  onAddComment,
+  comments,
+  onEditComment,
+  onSaveComment,
+  onCancel
 }) => {
   const [comment, setComment] = useState('');
 
@@ -38,6 +37,13 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
     if (comment.trim() !== '') {
       onAddComment(comment);
       setComment('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); // Prevents a new line from being added in the textarea
+      handleAddCommentClick();
     }
   };
 
@@ -63,6 +69,8 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
             placeholder="Add your comment..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            onKeyDown={handleKeyDown}
+            rows={3}
           />
           <button
             className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded"
