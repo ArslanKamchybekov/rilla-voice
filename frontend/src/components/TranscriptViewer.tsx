@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
 
-interface TranscriptViewerProps {
-  selectedEntryId: number | null;
-  onSelectEntry: (id: number) => void;
-  onAddComment: (newComment: string, image: File | null) => void;
-  comments: { [key: number]: string[] };
-  onEditComment: (index: number) => void;
-  onSaveComment: (text: string) => void;
-  onCancel: () => void;
-  onUploadImage?: (image: File) => void; // New prop for image upload
-}
-
 const transcriptData = [
   { id: 1, speaker: 'Salesperson', text: 'Good morning! How can I help you today?' },
   { id: 2, speaker: 'Customer', text: 'I’m interested in your product, but I have a few questions.' },
@@ -23,6 +12,17 @@ const transcriptData = [
   { id: 9, speaker: 'Salesperson', text: 'Great! I’ll help you with the process. Thank you for choosing our product!' },
 ];
 
+type TranscriptViewerProps = {
+  selectedEntryId: number | null;
+  onSelectEntry: (id: number) => void;
+  onAddComment: (comment: string, imageUrl: string | undefined) => void;
+  comments: { [key: number]: { text: string; imageUrl?: string }[] };
+  onEditComment: (id: number) => void;
+  onSaveComment: (id: number, text: string, imageUrl: string | undefined) => void;
+  onCancel: () => void;
+  onUploadImage: (imageFile: File) => void;
+};
+
 const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
   selectedEntryId,
   onSelectEntry,
@@ -33,29 +33,33 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
   onCancel,
   onUploadImage
 }) => {
-  const [comment, setComment] = useState('');
-  const [image, setImage] = useState<File | null>(null);
-  const [hoveredEntryId, setHoveredEntryId] = useState<number | null>(null);
+  const [comment, setComment] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleAddCommentClick = () => {
-    if (comment.trim() !== '' || image) {
-      onAddComment(comment, image);
+    if (comment.trim() !== '' || imageUrl) {
+      onAddComment(comment, imageUrl || undefined);
       setComment('');
-      setImage(null);
+      setImageUrl(null);
     }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const selectedImage = e.target.files[0];
-      setImage(selectedImage);
-      if (onUploadImage) onUploadImage(selectedImage); // Call the upload function if provided
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const url = reader.result as string;
+        setImageUrl(url);
+        onUploadImage(file); // Notify parent component
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // Prevents a new line from being added in the textarea
+      e.preventDefault();
       handleAddCommentClick();
     }
   };
@@ -69,16 +73,19 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
             key={entry.id}
             className={`relative my-2 p-2 border ${selectedEntryId === entry.id ? 'border-yellow-500 bg-yellow-100' : 'border-gray-300'}`}
             onClick={() => onSelectEntry(entry.id)}
-            onMouseEnter={() => setHoveredEntryId(entry.id)}
-            onMouseLeave={() => setHoveredEntryId(null)}
           >
             <p className="font-bold">{entry.speaker}:</p>
             <p>{entry.text}</p>
-            {hoveredEntryId === entry.id && (
-              <div className="absolute top-0 right-0 mt-1 mr-1 p-2 bg-gray-200 text-sm rounded shadow-lg">
-                Click to comment
+            {comments[entry.id]?.map((comment, index) => (
+              <div key={index} className="mt-2 p-2 border-t border-gray-200">
+                <p>{comment.text}</p>
+                {comment.imageUrl && (
+                  <div className="mt-2">
+                    <img src={comment.imageUrl} alt="Comment" className="w-32 h-32" />
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </div>
         ))}
       </div>
@@ -104,7 +111,7 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
           >
             Add Comment
           </button>
-          {image && <p>Selected image: {image.name}</p>}
+          {imageUrl && <p>Selected image: <img src={imageUrl} alt="Selected" className="w-32 h-32" /></p>}
         </div>
       )}
     </div>

@@ -1,4 +1,5 @@
 import sapesperson from "./assets/salesperson.jpg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -6,7 +7,7 @@ const Home = () => {
       <div className="px-6 lg:px-10">
         <div className="absolute inset-0 -z-10" aria-hidden="true">
           <img
-            className="w-full h-auto object-cover "
+            className="w-full h-auto object-cover"
             src={sapesperson}
             alt="salesperson"
             style={{ height: "80vh" }}
@@ -28,6 +29,12 @@ const Home = () => {
               >
                 Get started
               </a>
+              <Link
+                to="/sales"
+                className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              >
+                Go to Sales
+              </Link>
             </div>
           </div>
         </div>
