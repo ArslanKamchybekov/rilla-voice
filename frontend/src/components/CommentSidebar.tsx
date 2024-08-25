@@ -42,7 +42,8 @@ const CommentSidebar: React.FC<CommentSidebarProps> = ({
             </div>
           ))
         ) : (
-          <p className="text-center">No comments for this entry.</p>
+          <p className="text-center text-white">No comments for this entry.</p>
+
         )}
       </div>
     </div>
