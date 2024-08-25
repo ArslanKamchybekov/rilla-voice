@@ -17,9 +17,10 @@ root.render(
 
 const favicon = document.createElement('link');
 favicon.rel = 'icon';
-favicon.type = '/rilla.jpeg';
-favicon.href = rilla;
+favicon.type = 'image/jpeg'; // Correct type for the favicon
+favicon.href = rilla; // Ensure this path is correct
 document.head.appendChild(favicon);
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

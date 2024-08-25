@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CommentSidebar from './CommentSidebar';
 import TranscriptViewer from './TranscriptViewer';

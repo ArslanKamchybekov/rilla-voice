@@ -11,13 +11,13 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="w-full min-h-screen flex flex-col overflow-x-hidden bg-gray-100">
       <NavBar />
       <Home />
-      <div className="flex justify-center mt-8">
+      <div className="flex flex-col justify-center items-center mt-8 px-4 sm:px-6 lg:px-8">
         <button
           onClick={handleSalesClick}
-          className="bg-blue-500 text-white p-4 rounded"
+          className="bg-blue-500 text-white p-4 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 w-full sm:w-auto"
         >
           Go to Sales
         </button>
