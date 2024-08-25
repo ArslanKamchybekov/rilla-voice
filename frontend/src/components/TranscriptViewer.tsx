@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 interface TranscriptViewerProps {
   selectedEntryId: number | null;
   onSelectEntry: (id: number) => void;
-  onAddComment: (newComment: string) => void;
+  onAddComment: (newComment: string, image: File | null) => void;
   comments: { [key: number]: string[] };
   onEditComment: (index: number) => void;
   onSaveComment: (text: string) => void;
   onCancel: () => void;
+  onUploadImage?: (image: File) => void; // New prop for image upload
 }
 
 const transcriptData = [
@@ -29,15 +30,26 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
   comments,
   onEditComment,
   onSaveComment,
-  onCancel
+  onCancel,
+  onUploadImage
 }) => {
   const [comment, setComment] = useState('');
+  const [image, setImage] = useState<File | null>(null);
   const [hoveredEntryId, setHoveredEntryId] = useState<number | null>(null);
 
   const handleAddCommentClick = () => {
-    if (comment.trim() !== '') {
-      onAddComment(comment);
+    if (comment.trim() !== '' || image) {
+      onAddComment(comment, image);
       setComment('');
+      setImage(null);
+    }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedImage = e.target.files[0];
+      setImage(selectedImage);
+      if (onUploadImage) onUploadImage(selectedImage); // Call the upload function if provided
     }
   };
 
@@ -80,12 +92,19 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
             onKeyDown={handleKeyDown}
             rows={3}
           />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="mt-2 mb-2"
+          />
           <button
             className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded"
             onClick={handleAddCommentClick}
           >
             Add Comment
           </button>
+          {image && <p>Selected image: {image.name}</p>}
         </div>
       )}
     </div>
