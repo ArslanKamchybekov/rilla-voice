@@ -4,6 +4,7 @@ import CommentSidebar from "./components/CommentSidebar";
 import CommentBox from "./components/CommentBox";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
+import SummarySection from "./components/SummarySection";
 
 type CommentsType = { [key: number]: string[] };
 
