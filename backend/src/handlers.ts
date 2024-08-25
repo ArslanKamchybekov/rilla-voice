@@ -25,7 +25,7 @@ export const addComment: APIGatewayProxyHandler = async (event) => {
     };
 
     await s3.upload(params).promise();
-    fileUrls.push(`https://${config.S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`);
+    fileUrls.push(`https://${process.env.S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`);
   }
 
   // Prepare comment object
