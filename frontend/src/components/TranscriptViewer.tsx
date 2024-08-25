@@ -32,6 +32,7 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
   onCancel
 }) => {
   const [comment, setComment] = useState('');
+  const [hoveredEntryId, setHoveredEntryId] = useState<number | null>(null);
 
   const handleAddCommentClick = () => {
     if (comment.trim() !== '') {
@@ -54,11 +55,18 @@ const TranscriptViewer: React.FC<TranscriptViewerProps> = ({
         {transcriptData.map((entry) => (
           <div
             key={entry.id}
-            className={`my-2 p-2 border ${selectedEntryId === entry.id ? 'border-yellow-500 bg-yellow-100' : 'border-gray-300'}`}
+            className={`relative my-2 p-2 border ${selectedEntryId === entry.id ? 'border-yellow-500 bg-yellow-100' : 'border-gray-300'}`}
             onClick={() => onSelectEntry(entry.id)}
+            onMouseEnter={() => setHoveredEntryId(entry.id)}
+            onMouseLeave={() => setHoveredEntryId(null)}
           >
             <p className="font-bold">{entry.speaker}:</p>
             <p>{entry.text}</p>
+            {hoveredEntryId === entry.id && (
+              <div className="absolute top-0 right-0 mt-1 mr-1 p-2 bg-gray-200 text-sm rounded shadow-lg">
+                Click to comment
+              </div>
+            )}
           </div>
         ))}
       </div>
